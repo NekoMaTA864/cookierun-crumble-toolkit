@@ -1,5 +1,9 @@
 # 餅乾作戰室｜Cookie Lab
 
+網站：https://nekomata864.github.io/cookierun-crumble-toolkit/
+
+原始碼：https://github.com/NekoMaTA864/cookierun-crumble-toolkit
+
 《薑餅人放置大戰爭 / CookieRun: Crumble》個人小工具，純 HTML / CSS / JavaScript，可部署 GitHub Pages。
 
 ## 初版可用
