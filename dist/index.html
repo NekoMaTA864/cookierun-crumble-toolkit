@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#28231e"><meta name="description" content="薑餅人放置大戰爭個人配隊與糖符文工具：缺角比對、收藏、每日副本與影片來源。">
+  <title>餅乾作戰室｜薑餅人放置大戰爭</title>
+  <link rel="stylesheet" href="style.css"><script src="app.js" type="module"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#stage"><span class="brand-mark" aria-hidden="true">✳</span><span>餅乾作戰室<small>CRUMBLE / PERSONAL TOOLS</small></span></a>
+    <p class="nav-label">作戰配置</p>
+    <nav aria-label="主要導覽">
+      <a href="#stage" data-page="stage"><span>01</span>推圖陣容</a>
+      <a href="#guild" data-page="guild"><span>02</span>公會討伐戰</a>
+      <a href="#arena" data-page="arena"><span>03</span>競技場陣容</a>
+      <a href="#daily" data-page="daily"><span>04</span>每日副本</a>
+      <a href="#dex" data-page="dex"><span>05</span>角色與加工糖</a>
+      <a href="#updates" data-page="updates"><span>↻</span>來源與更新</a>
+    </nav>
+    <div class="side-bottom"><span class="local-dot"></span>個人設定儲存在此瀏覽器<p>持有名單、收藏與自訂隊伍可匯出備份。</p><button id="export">匯出設定 ↗</button><label class="import">匯入設定<input type="file" id="import" accept="application/json,.json"></label></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>NEKOMATA / COOKIE LAB</span><div><span class="pill">初版 v0.1</span><a href="https://www.youtube.com/@ponponlin" target="_blank" rel="noopener noreferrer">蹦蹦林頻道 ↗</a></div></header>
+    <main id="main" tabindex="-1">
+      <div class="page-title"><div><p class="eyebrow" id="eyebrow">TEAM PLANNER</p><h1 id="title">推圖陣容</h1><p id="intro"></p></div><div class="today"><small>資料核對</small><strong id="checked">2026.10.21</strong><span>非官方個人工具</span></div></div>
+      <div id="content" aria-live="polite"><p>正在讀取配置資料…</p></div>
+    </main>
+    <footer>薑餅人放置大戰爭 · CookieRun: Crumble · 名稱與商標屬 Devsisters。初版收錄參考配置，非全角色完整圖鑑。</footer>
+  </div>
+  <div id="toast" role="status"></div>
+  <dialog id="editor"><form id="team-form"><div class="row"><h2>儲存我的配置</h2><button type="button" id="close-editor" aria-label="關閉">×</button></div><label>隊伍名稱<input id="team-name" maxlength="80" required></label><label>模式<select id="team-mode"><option value="stage">推圖</option><option value="guild">公會戰</option><option value="arena">一般競技場</option><option value="chaos">熱熱鬧鬧競技場</option><option value="daily">每日副本</option></select></label><label>每日副本類別（其他模式留白）<select id="team-subtype"><option value="">不指定</option><option>經驗值</option><option>錢幣</option><option>麵團</option><option>研究石</option><option>符文結晶</option></select></label><label>餅乾（每行一名，最多 12 名）<textarea id="team-cookies" rows="5" required></textarea></label><label>寵物（每行一名，最多 3 名）<textarea id="team-pets" rows="2"></textarea></label><label>用途／實測筆記<textarea id="team-note" rows="3" maxlength="2000"></textarea></label><p class="muted">自訂配置只儲存在此瀏覽器，不會變更公開攻略。</p><button class="primary" type="submit">儲存配置</button><p id="form-error" role="alert"></p></form></dialog>
+</body></html>
