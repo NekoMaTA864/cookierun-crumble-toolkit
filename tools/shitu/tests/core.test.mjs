@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {normalize,scoreImage,parseTags,naturalCompare,validateBackup} from '../core.mjs';
+const cat={title:'我很好，真的。',description:'笑著但其實快崩潰',tags:['心累','貓咪'],filename:'smile.png'};
+test('自然敘述與單一中文字都可命中既有資訊',()=>{assert(scoreImage(cat,'笑著但其實快崩潰')>0);assert(scoreImage(cat,'貓')>0);});
+test('完全不相關的查詢不回傳無關圖片',()=>assert.equal(scoreImage(cat,'宇宙飛船'),0));
+test('空格關鍵字須各自匹配',()=>{assert(scoreImage(cat,'貓 崩潰')>0);assert.equal(scoreImage(cat,'貓 飛船'),0);});
+test('同義詞擴展支援情境查詢，標題原句優先',()=>{assert(scoreImage(cat,'撐不住')>0);assert(scoreImage(cat,'我很好')>scoreImage(cat,'撐不住'));});
+test('套圖名稱也可以搜尋，不需要修改圖片欄位',()=>assert(scoreImage(cat,'不想上班',['不想上班的貓'])>0));
+test('更新標籤立即改變搜尋結果',()=>{assert.equal(scoreImage(cat,'私人暗號'),0);assert(scoreImage({...cat,tags:['私人暗號']},'私人暗號')>0);});
+test('標籤去重、中文分隔與數量限制',()=>{assert.deepEqual(parseTags('貓咪、貓咪 #心累, 上班'),['貓咪','心累','上班']);assert.equal(parseTags(Array.from({length:40},(_,i)=>'t'+i).join(' ')).length,30);});
+test('全形英文正規化及自然數字排序',()=>{assert.equal(normalize(' ＡＢＣ，貓 '),'abc 貓');assert(naturalCompare('圖2','圖10')<0);});
+const backup=()=>({kind:'shitu-local-backup',version:1,images:[{id:'x',type:'image/png',tags:['貓'],data:'data:image/png;base64,aGVsbG8='}],albums:[{id:'a',name:'我的套圖',imageIds:['x']}]});
+test('接受格式正確的備份契約',()=>assert.equal(validateBackup(backup()).images.length,1));
+test('拒絕重複圖片與斷裂套圖關聯',()=>{const b=backup();b.images.push({...b.images[0]});assert.throws(()=>validateBackup(b));const c=backup();c.albums[0].imageIds.push('missing');assert.throws(()=>validateBackup(c));});
+test('拒絕外部網址與 SVG 偽裝原圖，不進行任何請求',()=>{const b=backup();b.images[0].data='https://example.invalid/photo.png';assert.throws(()=>validateBackup(b));const c=backup();c.images[0].type='image/svg+xml';assert.throws(()=>validateBackup(c));});
+test('拒絕錯誤版號、非字串標籤與過量資料',()=>{const b=backup();b.version=2;assert.throws(()=>validateBackup(b));const c=backup();c.images[0].tags=[{evil:true}];assert.throws(()=>validateBackup(c));const d=backup();d.albums=Array(1001).fill(d.albums[0]);assert.throws(()=>validateBackup(d));});
